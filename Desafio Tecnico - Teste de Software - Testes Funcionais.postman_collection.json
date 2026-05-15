@@ -1,0 +1,171 @@
+{
+  "info": {
+    "_postman_id": "5586212e-0402-4f98-ab00-2784dc352f85",
+    "name": "API CEP - Testes Funcionais",
+    "description": "Collection de testes funcionais para API pública de consulta de CEP",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "19198951"
+  },
+  "item": [
+    {
+      "name": "CT_01 - Consulta CEP válido",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code deve ser 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var jsonData = pm.response.json();",
+              "",
+              "pm.test('Validar estado', function () {",
+              "    pm.expect(jsonData.state).to.eql('SP');",
+              "});",
+              "",
+              "pm.test('Validar cidade', function () {",
+              "    pm.expect(jsonData.city).to.eql('Osasco');",
+              "});",
+              "",
+              "pm.test('Validar bairro', function () {",
+              "    pm.expect(jsonData.district).to.eql('Piratininga');",
+              "});",
+              "",
+              "pm.test('Validar logradouro', function () {",
+              "    pm.expect(jsonData.address).to.eql('Rua Paula Rodrigues');",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/72145-808.json",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "72145-808.json"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT_02 - Consulta CEP válido sem hífen",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code deve ser 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var jsonData = pm.response.json();",
+              "",
+              "pm.test('Resposta deve conter cidade', function () {",
+              "    pm.expect(jsonData.city).to.not.be.undefined;",
+              "});",
+              "",
+              "pm.test('Resposta deve conter estado', function () {",
+              "    pm.expect(jsonData.state).to.not.be.undefined;",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/72145808.json",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "72145808.json"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT_03 - Consulta CEP inexistente",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code diferente de 200', function () {",
+              "    pm.expect(pm.response.code).to.not.eql(200);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/00000-000.json",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "00000-000.json"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CT_04 - Consulta CEP inválido com letras",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code diferente de 200', function () {",
+              "    pm.expect(pm.response.code).to.not.eql(200);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/xxxxs-183.json",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "xxxxs-183.json"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://cdn.apicep.com/file/apicep"
+    }
+  ]
+}
